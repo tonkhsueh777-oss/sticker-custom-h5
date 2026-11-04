@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="400" viewBox="0 0 320 280" role="img" aria-label="retro style mascot illustration">
+ <rect width="320" height="280" rx="26" fill="#F9E8E8"/>
+ <circle cx="267" cy="49" r="25" fill="white" opacity=".65"/><circle cx="56" cy="213" r="34" fill="white" opacity=".5"/>
+ <path d="M34 70 l8 -16 l8 16 l16 8 l-16 7 l-8 16 l-8 -16 l-16 -7 z" fill="#F4C568" opacity=".8"/>
+ <g transform="translate(0 9)"><path d="M90 127 Q80 87 105 82 Q130 96 119 126" fill="#EDB9BD" stroke="#69454D" stroke-width="4"/><path d="M230 127 Q240 87 215 82 Q190 96 201 126" fill="#EDB9BD" stroke="#69454D" stroke-width="4"/><ellipse cx="160" cy="164" rx="88" ry="83" fill="#EDB9BD" stroke="#69454D" stroke-width="4"/>
+ <path d="M114 126 Q158 94 207 126" fill="none" stroke="#69454D" stroke-width="7" stroke-linecap="round"/>
+ <ellipse cx="126" cy="164" rx="6.5" ry="9" fill="#69454D"/><ellipse cx="194" cy="164" rx="6.5" ry="9" fill="#69454D"/>
+ <ellipse cx="105" cy="191" rx="17" ry="8" fill="#F39F9B" opacity=".85"/><ellipse cx="215" cy="191" rx="17" ry="8" fill="#F39F9B" opacity=".85"/>
+ <path d="M145 190 Q160 205 175 190" stroke="#69454D" stroke-width="5" stroke-linecap="round" fill="none"/>
+ <ellipse cx="160" cy="181" rx="4" ry="3.2" fill="#69454D"/>
+ </g>
+ <rect x="234" y="234" width="65" height="30" rx="15" fill="white" opacity=".9"/><text x="266" y="254" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="bold" fill="#69454D">R</text>
+</svg>
