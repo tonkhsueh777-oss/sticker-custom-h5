@@ -1,89 +1,41 @@
-# 表情研究所 · 表情包定制 H5（V0.1 朋友体验版）
+# 表情研究所 · H5 V0.2（朋友云端测试版）
 
-**一个可以直接部署到 GitHub Pages 的静态网站项目。无需安装 Node、npm、Vue、数据库，也不需要云服务器。**
+当前网站：[表情研究所](https://tonkhsueh777-oss.github.io/sticker-custom-h5/)
+
+## 系统架构
+
+- GitHub Pages：手机 H5 与电脑管理后台（同一网址）
+- Supabase 免费项目：`sticker-custom-h5`，新加坡区域
+- Edge Function：`sticker-api`，统一验证订单专属访问令牌和管理员邮箱
+- 私有存储：`sticker-files`
+- 数据表：`sticker_orders`、`sticker_revisions`、`sticker_admins`、`sticker_request_limiter`
 
 ## 已实现
 
-- 手机与电脑适配的 H5 首页、六款原创演示模板。
-- 选择制作平台（微信／LINE／双平台）和表情数量（8／16／24 张）。
-- 上传 **一张** 人物／宠物／IP 参考图；浏览器本地压缩预览。
-- 模拟 AI 客服：内置关键词回复、补充说明、编辑逐张表情内容。
-- 生成结构化制作需求单、客户确认后创建测试订单。
-- 导出包含参考图的 JSON 订单包；在其他设备的演示后台导入。
-- 管理后台查看订单、下载参考图、标记制作中、上传预览图片和可选 ZIP。
-- 客户查看作品预览、提出修改意见；后台受理后才计入 3 轮，纠错可以免扣。
-- 客户点击「确认完成」；同一浏览器内可下载通过后台存储的 ZIP。
+- 客户无需注册：选模板、选 8／16／24 张、上传一张参考图、确认需求。
+- 创建订单时将订单和参考图写入私有 Supabase 存储，管理员可从其他设备读取。
+- 客户使用随机专属链接访问自己的订单；无需手机号或密码。
+- 只有获准的管理员邮箱能进入管理后台；提供订单详情、制作状态、预览上传和 ZIP 交付。
+- 三轮修改由服务器记录，制作纠错可不扣次数。
+- 客服仍是规则模拟；**本测试版不收费，不调用真实 AI 生图服务**。
 
-## 非功能范围（必须知道）
+## 管理员首次配置（需要手动完成）
 
-- **不是正式 AI 客服**：聊天为预设规则模拟，不调用 AI API。
-- **没有真实收款**：不显示真实付款二维码，不接微信支付／支付宝。
-- **没有云端数据库、真实登录或权限控制**：订单保存在当前浏览器 `localStorage`；ZIP 保存在当前浏览器 `IndexedDB`。
-- **跨设备不自动同步**：手机测试订单须下载 `.json` 文件发给制作方，再在电脑后台导入。后台的状态和交付也不会自动同步给朋友。
-- **无真实管理员安全登录**：`#/admin` 只是操作体验界面，任何访问者都能看到他自己的浏览器本地演示数据；不可作为正式商业系统使用。
-- **尚无自动图片尺寸转换和一键打包**：当前可上传预览 PNG 和已制作的 ZIP，图片规格处理列入后续阶段。
-- 不要用于正式商业接单或真实客户资料存储。GitHub Pages 的使用受其官方服务限制。
+1. 登录 [Supabase Auth URL Configuration](https://supabase.com/dashboard/project/tzebvgfhhfikeuccavqn/auth/url-configuration)。
+2. Site URL 设置：`https://tonkhsueh777-oss.github.io/sticker-custom-h5/`
+3. Redirect URLs 增加：`https://tonkhsueh777-oss.github.io/sticker-custom-h5/**`
+4. 打开网站的「管理后台」，填写获授权的邮箱，点「发送安全登录邮件」。
+5. 打开邮件里的链接，即可进入后台。首次邮件可能要等一会儿；免费项目邮件有频率限制。
 
-## 最快在电脑测试（不需要安装任何东西）
+当前允许的管理员邮箱：`tonkhsueh777@gmail.com`（若与你实际使用的邮箱不同，需先在项目的 `sticker_admins` 表中变更）。
 
-直接双击 `index.html` 通常可显示样式，但浏览器对 `file://` 的 JS Module 有安全限制。建议启动一个本地静态服务：
+## 朋友测试流程
 
-**Mac / Windows 安装有 Python 的情况下：**
+手机打开 H5 → 创建订单 → 复制并保存专属订单链接 → 电脑以管理员邮箱登录 → 「刷新订单」 → 下载参考图 → 用现有工具制作 → 上传预览和可选 ZIP → 客户刷新链接查看 → 提交修改 → 管理员受理修改。
 
-```bash
-cd sticker-h5-v0.1
-python3 -m http.server 8080
-```
+## 注意事项
 
-打开 <http://localhost:8080/>。Windows 有的机器可用 `python -m http.server 8080`。
-
-如果不想运行本地命令，可直接部署到 GitHub Pages 测试。
-
-## GitHub Pages 发布：最简单的操作
-
-1. 登录 <https://github.com/new>，新建公开仓库，建议名 `sticker-custom-h5`。**不要上传真实客户照片、正式收款码或密钥。**
-2. 将解压后的文件和文件夹上传到仓库根目录，确保根目录有 `index.html`。GitHub 网页可以使用 **Add file → Upload files**。
-3. 进入仓库 **Settings → Pages**，在 **Build and deployment → Source** 选择 **GitHub Actions**。
-4. 回到仓库 **Actions**，等待 `Deploy static demo to GitHub Pages` 工作流程成功（若尚未触发，可点击 `Run workflow`）。
-5. 网站地址通常为 `https://你的GitHub用户名.github.io/sticker-custom-h5/`，实际以 Settings → Pages 显示为准。
-6. 修改代码后提交到 `main`，GitHub Actions 会自动重新部署。
-
-**另一种方式（不使用 Actions）：** Settings → Pages → Source 选 `Deploy from a branch`，选择 `main` 和 `/ (root)`，保存即可。两种发布方式只选一种。
-
-> 若打包上传时需要保留 `.github/workflows/deploy.yml`、`.nojekyll` 等隐藏文件，建议解压后检查目录结构。
-
-## 朋友测试如何完整走一遍
-
-1. 手机打开网址 → 选择模板 → 选择 16 张 → 上传参考图 → 和模拟客服聊天 → 确认 → 创建订单。
-2. 手机订单页点击 **导出订单 JSON**，将文件发送给你（通过微信、LINE、邮件均可）。
-3. 电脑打开相同网站的 **管理后台** → **导入朋友的测试订单** → 查看需求单与参考图。
-4. 在你已有的生图工具制作若干预览 PNG → 后台上传预览，选择 ZIP（可选）。
-5. **同一台电脑浏览器** 打开「测试订单」可体验客户预览、提交修改、管理员受理、再上传下一版。
-6. 注意：手机与电脑的网页没有实时同步。要实现朋友手机立即看见新版本，下一阶段必须接入数据库与文件存储服务。
-
-## 文件结构
-
-```text
-sticker-h5-v0.1/
-├── index.html                    # 主入口
-├── style.css                     # 响应式设计
-├── js/
-│   ├── app.js                    # 客户 H5、演示后台、交互流程
-│   ├── data.js                   # 模板与默认表情清单
-│   ├── helpers.js                # 订单、校验、模拟客服
-│   └── storage.js                # 本地存储／导入导出／ZIP
-├── assets/                       # 原创 SVG 演示图
-├── .github/workflows/deploy.yml  # GitHub Pages 自动部署
-├── .nojekyll
-├── AGENTS.md                     # Codex 项目规则
-├── CODEX_开发指令.md               # 可直接复制给 Codex 的提示词
-├── 表情素材制作标准.md
-└── 测试与验收清单.md
-```
-
-## 下一步升级顺序
-
-- V0.2：真实数据库与文件存储，跨设备自动同步。
-- V0.3：AI 客服（服务端保护 API Key，结构化需求确认和工单）。
-- V0.4：受控文件交付、真正的管理员身份验证、后端修改次数记录。
-- V1.0：正式收款规则、微信／LINE 文件规格检查与交付打包、正式部署。
+- V0.1 的本地演示订单**不会自动迁移**，需重新提交云端测试订单。
+- 浏览器中的代码只有公开 publishable key；**绝对不要把 service-role key、管理员密码、真实客户资料放到 GitHub 仓库**。
+- 客户订单链接相当于访问凭证，不能公开传播；不适合收集敏感证件。
+- GitHub Pages 先限朋友体验测试。正式收费接单应迁移到允许商业用途的网站托管服务，并补充隐私政策、备份、监控及反滥用控制。
